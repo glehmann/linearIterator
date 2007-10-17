@@ -81,5 +81,4 @@ ADD_TEST(testCorrect testIt itkImageLinearIteratorTest)
 ADD_TEST(smootherSpeed testSpeed ${INPUT_IMAGE} outOrig.png outNew.png)
 ADD_TEST(CompareSmooth ${IMAGE_COMPARE} outOrig.png outNew.png)
 
-ADD_TEST(smootherSpeed testSpeed2 ${INPUT_IMAGE} )
-ADD_TEST(CompareSmooth ${IMAGE_COMPARE} outOrig.png outNew.png)
+ADD_TEST(iteratorSpeed testSpeed2 ${INPUT_IMAGE} )

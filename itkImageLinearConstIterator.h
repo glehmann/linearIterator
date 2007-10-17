@@ -207,16 +207,6 @@ public:
     // sweeping will be in direction 0.
     m_LineLength = this->m_Region.GetSize()[m_Direction];
     m_LineJump = m_Jump * m_LineLength;
-//     if (m_Direction == 0)
-//       {
-//       this->m_LineJump = this->m_OffsetTable[1];
-//       m_LineMove = 1;
-//       }
-//     else
-//       {
-//       this->m_LineJump = this->m_OffsetTable[0];
-//       m_LineMove = 0;
-//       }
     this->m_EndLine = this->m_BeginLine + this->m_LineJump;
   }
 

@@ -25,53 +25,56 @@ int main(int, char * argv[])
   image->Update();
   image->DisconnectPipeline();
 
-  int tests = 500;
-  itk::TimeProbe OrigTime;
-  itk::TimeProbe NewTime;
-  NewTime.Start();
-  for (unsigned i = 0; i< tests;i++)
+  unsigned tests = 500;
+  std::cout << "Direction \t Old \t New" << std::endl;
+  for (unsigned dir = 0; dir < 2; dir++) 
     {
-    typedef itk::ImageLinearConstIterator<IType> IteratorType;
-    IteratorType it(image, image->GetLargestPossibleRegion());
-    it.SetDirection(0);
-    it.GoToBegin();
-    while (! it.IsAtEnd() )
+    itk::TimeProbe OrigTime;
+    itk::TimeProbe NewTime;
+    NewTime.Start();
+    for (unsigned i = 0; i< tests;i++)
       {
-      while (! it.IsAtEndOfLine() )
+      typedef itk::ImageLinearConstIterator<IType> IteratorType;
+      IteratorType it(image, image->GetLargestPossibleRegion());
+      it.SetDirection(0);
+      it.GoToBegin();
+      while (! it.IsAtEnd() )
 	{
-	PType value = it.Get();
-	++it;
+	while (! it.IsAtEndOfLine() )
+	  {
+	  PType value = it.Get();
+	  ++it;
+	  }
+	it.NextLine();
 	}
-      it.NextLine();
       }
-    }
-  NewTime.Stop();
-  OrigTime.Start();
-  for (unsigned i = 0; i< tests;i++)
-    {
-    typedef itk::ImageLinearConstIteratorWithIndex<IType> IteratorType;
-    IteratorType it(image, image->GetLargestPossibleRegion());
-    it.SetDirection(0);
-    it.GoToBegin();
-    while (! it.IsAtEnd() )
+    NewTime.Stop();
+    OrigTime.Start();
+    for (unsigned i = 0; i< tests;i++)
       {
-      while (! it.IsAtEndOfLine() )
+      typedef itk::ImageLinearConstIteratorWithIndex<IType> IteratorType;
+      IteratorType it(image, image->GetLargestPossibleRegion());
+      it.SetDirection(0);
+      it.GoToBegin();
+      while (! it.IsAtEnd() )
 	{
-	PType value = it.Get();
-	++it;
+	while (! it.IsAtEndOfLine() )
+	  {
+	  PType value = it.Get();
+	  ++it;
+	  }
+	it.NextLine();
 	}
-      it.NextLine();
       }
-    }
-  OrigTime.Stop();
+    OrigTime.Stop();
 //   typedef itk::ImageFileWriter< IType > WriterType;
 //   WriterType::Pointer writer = WriterType::New();
 //   writer->SetInput( reader->GetOutput() );
 //   writer->SetFileName( argv[2] );
 //   writer->Update();
-  std::cout << "Iteration speed : Old \t New" << std::endl;
-  std::cout << std::setprecision(3) <<  OrigTime.GetMeanTime() << "\t"
-	    << NewTime.GetMeanTime() << std::endl;
+    std::cout << std::setprecision(3) <<  dir << "\t" << OrigTime.GetMeanTime() << "\t"
+	      << NewTime.GetMeanTime() << std::endl;
+    }
 
   return EXIT_SUCCESS;
 }
