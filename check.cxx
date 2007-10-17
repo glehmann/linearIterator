@@ -3,7 +3,7 @@
 #include "itkCommand.h"
 #include "itkSimpleFilterWatcher.h"
 
-#include "itkImageFilter.h"
+#include "itkImageLinearConstIterator.h"
 
 
 int main(int, char * argv[])
@@ -17,17 +17,31 @@ int main(int, char * argv[])
   ReaderType::Pointer reader = ReaderType::New();
   reader->SetFileName( argv[1] );
 
-  typedef itk::ImageFilter< IType, IType > FilterType;
-  FilterType::Pointer filter = FilterType::New();
-  filter->SetInput( reader->GetOutput() );
+  IType::Pointer image = reader->GetOutput();
+  image->Update();
+  image->DisconnectPipeline();
 
-  itk::SimpleFilterWatcher watcher(filter, "filter");
 
-  typedef itk::ImageFileWriter< IType > WriterType;
-  WriterType::Pointer writer = WriterType::New();
-  writer->SetInput( filter->GetOutput() );
-  writer->SetFileName( argv[2] );
-  writer->Update();
+  typedef itk::ImageLinearConstIterator<IType> IteratorType;
+  IteratorType it(image, image->GetLargestPossibleRegion());
+  it.SetDirection(1);
+  it.GoToBegin();
+  while (! it.IsAtEnd() )
+    {
+    while (! it.IsAtEndOfLine() )
+      {
+      PType value = it.Get();
+      std::cout << (int)value << std::endl;
+      ++it;
+      }
+    it.NextLine();
+    }
+
+//   typedef itk::ImageFileWriter< IType > WriterType;
+//   WriterType::Pointer writer = WriterType::New();
+//   writer->SetInput( reader->GetOutput() );
+//   writer->SetFileName( argv[2] );
+//   writer->Update();
 
   return 0;
 }

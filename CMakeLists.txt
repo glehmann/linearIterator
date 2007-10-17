@@ -1,5 +1,5 @@
 #Change PROJECT_NAME to the name of your project
-PROJECT()
+PROJECT(linearIterator)
 
 # set the name of the input image used to run the test
 SET(INPUT_IMAGE ${CMAKE_SOURCE_DIR}/images/cthead1.png)
@@ -62,10 +62,10 @@ ENDIF(BUILD_WRAPPERS)
 
 IF(BUILD_TESTING)
 
-SET(CurrentExe "check")
+FOREACH(CurrentExe "check" "testIt" "testSpeed" "testSpeed2")
 ADD_EXECUTABLE(${CurrentExe} ${CurrentExe}.cxx)
 TARGET_LINK_LIBRARIES(${CurrentExe} ${Libraries})
-
+ENDFOREACH(CurrentExe)
 ENDIF(BUILD_TESTING)
 
 #the following line is an example of how to add a test to your project.
@@ -76,5 +76,10 @@ ENDIF(BUILD_TESTING)
 #any tests you can comment out or delete the following line.
 # ADD_TEST(Testname ExecutableToRun arg1 arg2 arg3)
 
-ADD_TEST(Run check ${INPUT_IMAGE} out.png)
-ADD_TEST(CompareImage ${IMAGE_COMPARE} out.png ${CMAKE_SOURCE_DIR}/images/test.png)
+ADD_TEST(testCorrect testIt itkImageLinearIteratorTest)
+
+ADD_TEST(smootherSpeed testSpeed ${INPUT_IMAGE} outOrig.png outNew.png)
+ADD_TEST(CompareSmooth ${IMAGE_COMPARE} outOrig.png outNew.png)
+
+ADD_TEST(smootherSpeed testSpeed2 ${INPUT_IMAGE} )
+ADD_TEST(CompareSmooth ${IMAGE_COMPARE} outOrig.png outNew.png)
