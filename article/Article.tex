@@ -100,7 +100,13 @@ pre-computed and used to iterate along a line. The methods used to
 move to the next line are based on the {\em WithIndex} versions of the
 iterator.
 
-The interface to the new iterators have the standard form.
+The interface to the new iterators has the standard form.
+
+The most recent versions of these packages can be
+obtained from \url{http://voxel.jouy.inra.fr/darcsweb/}\footnote{
+The most recent versions can be obtained using darcs \cite{DarcsWebSite}
+with the command {\em darcs get http://voxel.jouy.inra.fr/\\darcs/contrib-itk/package},
+where {\em package} must be replace by {\em linearIterator}}.
 
 \section{Correctness testing}
 Functionality of the the modified iterators was validated using an
@@ -108,6 +114,9 @@ extended version of {\em itkImageLinearIteratorTest} from the
 InsightToolkit distribution. The extensions were to test the iterators
 using lines in 3 directions, rather than the one direction of the
 original.
+
+It is possible that some constructors are missing or incorrect because
+I don't have a feel for what is necessasry or expected.
 
 \section{Performance testing}
 Two performance tests have been provided. The first simply visits each
@@ -143,14 +152,16 @@ WithIndex &  New \\
 The raw iteration time is slightly better than half the original
 time. However the modified smoothing filter did not exhibit a
 significant change in performance, presumably because the proportion
-of time spent in the iterator is quite low.
+of time spent in the iterator is quite low. A similar result was
+obtained for the parabolicMorphology filters, which prompted this
+development.
 
 \appendix
 
 
 
 \bibliographystyle{plain}
-\bibliography{InsightJournal}
+\bibliography{InsightJournal,local}
 \nocite{ITKSoftwareGuide}
 
 \end{document}
