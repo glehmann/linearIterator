@@ -26,6 +26,7 @@ int main(int, char * argv[])
   image->DisconnectPipeline();
 
   unsigned tests = 500;
+  tests=1;
   std::cout << "Direction \t Old \t New" << std::endl;
   for (unsigned dir = 0; dir < 2; dir++) 
     {
@@ -36,7 +37,7 @@ int main(int, char * argv[])
       {
       typedef itk::ImageLinearConstIterator<IType> IteratorType;
       IteratorType it(image, image->GetLargestPossibleRegion());
-      it.SetDirection(0);
+      it.SetDirection(dir);
       it.GoToBegin();
       while (! it.IsAtEnd() )
 	{
@@ -54,7 +55,7 @@ int main(int, char * argv[])
       {
       typedef itk::ImageLinearConstIteratorWithIndex<IType> IteratorType;
       IteratorType it(image, image->GetLargestPossibleRegion());
-      it.SetDirection(0);
+      it.SetDirection(dir);
       it.GoToBegin();
       while (! it.IsAtEnd() )
 	{
